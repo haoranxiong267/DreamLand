@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2973337486003340346, guid: a95383622da77e34387943988ad61b81, type: 3}
+      propertyPath: m_TagString
+      value: EnemySpawnPoint
+      objectReference: {fileID: 0}
     - target: {fileID: 3738157474985702851, guid: a95383622da77e34387943988ad61b81, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -63,6 +67,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1335083644395738265, guid: a95383622da77e34387943988ad61b81, type: 3}
+    - {fileID: 4577715077136115012, guid: a95383622da77e34387943988ad61b81, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3738157474985702851, guid: a95383622da77e34387943988ad61b81, type: 3}
       insertIndex: -1
