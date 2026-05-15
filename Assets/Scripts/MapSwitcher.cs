@@ -15,7 +15,7 @@ public class MapSwitcher : MonoBehaviour
     {
         if (mapIndex < 0 || mapIndex >= mapPrefabs.Length)
         {
-            Debug.LogError("无效的地图索引: " + mapIndex);
+            Debug.LogError("Invalid map index: " + mapIndex);
             return;
         }
 
@@ -27,18 +27,27 @@ public class MapSwitcher : MonoBehaviour
         currentMap = Instantiate(mapPrefabs[mapIndex], Vector3.zero, Quaternion.identity);
         currentMapIndex = mapIndex;
 
-        Debug.Log("切换到地图: " + GetMapName(mapIndex));
+        Debug.Log("Switching map to: " + GetMapName(mapIndex));
 
-        // --- 通知全局敌人生成管理器切换地图 ---
+        // --- Notify GlobalEnemyManager to load enemies for the new map ---
         GlobalEnemyManager enemyManager = FindObjectOfType<GlobalEnemyManager>();
         if (enemyManager != null)
         {
-            // 传递当前地图实例给GlobalEnemyManager
+            // Pass the current map instance to GlobalEnemyManager
             enemyManager.OnMapSwitched(mapIndex, currentMap);
         }
         else
         {
-            Debug.LogWarning("未找到GlobalEnemyManager，敌人不会随地图切换。");
+            Debug.LogWarning("GlobalEnemyManager not found, cannot switch enemy maps");
+        }
+
+        // +++ NEW: Trigger random buff selection after map switch +++
+        // Note: If you want to skip selection after the first map, add condition like if (mapIndex > 0)
+        BuffManager buffManager = FindObjectOfType<BuffManager>();
+        if (buffManager != null)
+        {
+            // Add a delay to let the scene settle before showing UI
+            Invoke(nameof(TriggerBuffSelection), 1.0f);
         }
     }
 
@@ -52,15 +61,25 @@ public class MapSwitcher : MonoBehaviour
     {
         switch (index)
         {
-            case 0: return "草地地图";
-            case 1: return "冰原地图";
-            case 2: return "熔岩地图";
-            default: return "未知地图";
+            case 0: return "Grassland Map";
+            case 1: return "Forest Map";
+            case 2: return "Snow Map";
+            default: return "Unknown Map";
         }
     }
 
     public int GetCurrentMapIndex()
     {
         return currentMapIndex;
+    }
+
+    // New method to trigger buff selection
+    private void TriggerBuffSelection()
+    {
+        BuffManager buffManager = FindObjectOfType<BuffManager>();
+        if (buffManager != null)
+        {
+            buffManager.ShowRandomBuffSelection();
+        }
     }
 }
